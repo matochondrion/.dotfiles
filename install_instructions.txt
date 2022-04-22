@@ -1,0 +1,108 @@
+# Run these commands manually. Tried to automate the steps several times,
+# but often times, when OS or key dependency changes, the script breaks.
+# install nix
+#
+# See original repo from Jake Wies:
+# * https://github.com/jakewies/.dotfiles
+#
+# Reference videos and articles:
+# * https://www.jakewiesler.com/blog/portable-development-environment
+
+# =====================================================
+# ====== IF LINUX, INSTALL PACKAGES WITH "nix" ======
+# =====================================================
+# install nix
+curl -L https://nixos.org/nix/install | sh
+
+# source nix
+. ~/.nix-profile/etc/profile.d/nix.sh
+
+# install nix packages
+nix-env -iA nixpkgs.zsh
+nix-env -iA nixpkgs.antibody
+nix-env -iA nixpkgs.git
+nix-env -iA nixpkgs.neovim
+nix-env -iA nixpkgs.tmux
+nix-env -iA nixpkgs.stow
+nix-env -iA nixpkgs.yarn
+nix-env -iA nixpkgs.fzf
+nix-env -iA nixpkgs.ripgrep
+nix-env -iA nixpkgs.bat
+nix-env -iA nixpkgs.gnumake
+nix-env -iA nixpkgs.gcc
+nix-env -iA nixpkgs.direnv
+nix-env -iA nixpkgs.trash-cli
+
+
+# add zsh as a login shell
+command -v zsh | sudo tee -a /etc/shells
+
+# use zsh as default shell
+sudo chsh -s $(which zsh) $USER
+
+# ====== FI (end) =====================================
+
+
+# =====================================================
+# ====== IF MAC, INSTALL PACKAGES WITH "homebrew"======
+# =====================================================
+# (installing nix on MacOS in a script was becoming too complicated
+# and non-standard when working with others)
+
+# install homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew update
+
+# install brew packages
+# brew install zsh # probably don't need
+brew install antibody # use ohmyzsh instead
+brew install zsh # use ohmyzsh instead
+brew install git
+brew install neovim
+brew install tmux
+brew install stow
+brew install node
+brew install yarn
+brew install fzf
+brew install ripgrep
+brew install bat
+# brew install gnumake
+# brew install gcc
+brew install direnv
+brew install wget{{{
+brew install tree
+brew install trash-cli}}}
+
+# install omyzsh instead of antibody
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# ====== FI (end) =====================================
+
+
+# =====================================================
+# ====== UNIVERSAL SETTINGS ===========================
+# =====================================================
+# stow dotfiles
+stow zsh
+stow tmux
+stow git
+stow nvim
+# stow kitty # off for now, may experiment with in future
+# stow p10k # off for now, may experiment with in future
+
+# bundle zsh plugins
+antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
+
+# install Plug for vim before opening vim and running `PlugInstall`
+# ref: https://github.com/junegunn/vim-plug
+
+# install nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# install latest node
+nvm install node
+
+# install neovim plugins
+nvim --headless +PlugInstall +qall
+
+# ====== FI (end) =====================================
