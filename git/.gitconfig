@@ -1,9 +1,9 @@
 [user]
-	name = Jake Wiesler
-	email = jakewiesler@gmail.com
+        name = Mat Sachs
+        email = matochondrion@gmail.com
 [core]
-	excludesfile = ~/.gitignore_global
-    editor = nvim
+        excludesfile = ~/.gitignore_global
+        editor = nvim
 [pull]
 	ff = only
 [init]

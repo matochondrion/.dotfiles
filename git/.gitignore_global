@@ -1,6 +1,6 @@
 ### OSX ###
-*.DS_Store 
-.AppleDouble 
+*.DS_Store
+.AppleDouble
 .LSOverride
 
 # Files that might appear in the root of a volume
