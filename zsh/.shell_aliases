@@ -38,9 +38,9 @@ alias tree="tree -C --dirsfirst -I 'node_modules'"
 # alias gls='clear; git log --graph --oneline --decorate --stat;'
 alias glo='clear; git log --graph --oneline --decorate;'
 alias gld='clear; git log --graph --date=short --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%ad)%Creset : %<(80,trunc)%s %C(bold blue)<%an>%Creset"'
-# git branch detail:
-gbd() { git for-each-ref --sort=committerdate --format='%(committerdate) %09 %(authorname) %09 %(refname)' }
-        
+# git branch detail (parse error...needs to be fixed):
+# gbd() { git for-each-ref --sort=committerdate --format='%(committerdate) %09 %(authorname) %09 %(refname)' }
+
 alias tr1='tree -L 1'
 alias tr2='tree -L 2'
 
