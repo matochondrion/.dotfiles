@@ -56,12 +56,10 @@ brew update
 # install brew packages
 # brew install zsh # probably don't need
 brew install antibody # use ohmyzsh instead
-brew install zsh # use ohmyzsh instead
 brew install git
 brew install neovim
 brew install tmux
 brew install stow
-brew install node
 brew install yarn
 brew install fzf
 brew install ripgrep
@@ -72,9 +70,15 @@ brew install direnv
 brew install wget{{{
 brew install tree
 brew install trash-cli}}}
+brew install python3
 
-# install omyzsh instead of antibody
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Install pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py
+
+# Install pything support for vim and neovim
+pip install pynvim
+pip install neovim
 
 # ====== FI (end) =====================================
 
