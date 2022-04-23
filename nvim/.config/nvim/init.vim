@@ -5,6 +5,18 @@ call plug#begin('~/.config/nvim/plugged')
 " TODO: [ ] see jakewies: .init.vim Experiment with settings
 " TODO: [ ] install coc-slime or some similar alternative
 
+" General
+Plug 'janko/vim-test' " easier testing
+Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
+" Plug 'preservim/nerdtree' file explorer
+Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
+Plug 'mattn/emmet-vim' " vim-emmet: `<C-e>,` expanding abbreviations similar to emmet
+Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
+Plug 'github/copilot.vim' " https://copilot.github.com/
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-gitgutter' "git icons in gutter
+Plug 'kassio/neoterm' "send commands to REPL (like Slime)
+
 " Tim Pope
 Plug 'tpope/vim-unimpaired' " Pairs of handy bracket mappings
 Plug 'tpope/vim-fugitive' " Git tools
@@ -16,16 +28,6 @@ Plug 'tpope/vim-repeat'
 " Fuzzy finding
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " https://github.com/junegunn/fzf
 Plug 'junegunn/fzf.vim' " https://github.com/junegunn/fzf.vim
-
-Plug 'janko/vim-test' " easier testing
-Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
-" Plug 'preservim/nerdtree' file explorer
-Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
-Plug 'mattn/emmet-vim' " vim-emmet: `<C-e>,` expanding abbreviations similar to emmet
-Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
-Plug 'github/copilot.vim' " https://copilot.github.com/
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'airblade/vim-gitgutter' "git icons in gutter
 
 " Colors
 Plug 'chriskempson/base16-vim' " Base16 is pretty standard, lots of options
@@ -113,6 +115,10 @@ call plug#end()
   autocmd FileType gitcommit set foldmethod=syntax
   " Enable scss-lint checking using Syntastic"
   let g:syntastic_scss_checkers = ['scss_lint']
+  let g:neoterm_repl_ruby='pry'
+  nnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send-line)
+  nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
+  vnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send)
 " }}}
 
 " FUNCTIONS {{{
@@ -236,13 +242,15 @@ call plug#end()
   nnoremap <C-e> :Explore<CR>
 
   " Buffers
-  " delete all buffers | open last closed buffer | delete [NO NAME] buffer
-  " need to escape the pipe, \|
-  nmap <leader>W :%bd\|e#\|bd#<CR>
+  "write and quit buffer
+  nmap <leader>W :wq<CR>
   nmap <leader>w :w<CR>
   nmap <leader>v :vsplit<CR>
   nmap <leader>s :split<CR><C-j>
   nmap <leader>o :only<CR>
+  " delete all buffers | open last closed buffer | delete [NO NAME] buffer
+  " need to escape the pipe, \|
+  nmap <leader>O :%bd\|e#\|bd#<CR>
   " quit buffer in normal mode
   noremap <leader>q :q<CR>
   " close buf in current split, leave split open, change to next buffer
