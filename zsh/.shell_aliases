@@ -1,4 +1,4 @@
-# Notes/Reminders
+# --- Notes ---
 # !^      first argument
 # !$      last argument
 # !*      all arguments
@@ -14,51 +14,70 @@
 #
 # NOTE: alias can be expanded by pressing esc, ctr-e
 
-## #Current Project alias's ##
-alias less='less -R'
+# --- [tTag] GENERAL -------------------------------------------------------
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
+alias less='less -R'
 alias cp='cp -i'
 alias mv='mv -i'
+alias ls='ls -al --color' # colored ls output
 
-# alias tree='tree -C --dirsfirst'
-alias tree="tree -C --dirsfirst -I 'node_modules'"
+# --- [tTag] ZSH ------------------------------------------------------------
+# Bundle zsh plugins via antibody
+alias update-antibody='antibody bundle < $HOME/.zsh_plugins.txt > $HOME/.zsh_plugins.sh'
 
-## git alias' ##
+# --- [tTag] GIT ALIAS ------------------------------------------------------
 # Handled by zsh oh-my-zsh git plugin
 # ref: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
 
-alias tr1='tree -L 1'
-alias tr2='tree -L 2'
-
-## fzf ##
+# --- [tTag] FZF ------------------------------------------------------------
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
+alias gcob='git branch | fzf | xargs git checkout' # checkout branch using fzf
 
-## Ruby/Rails ##
+# --- [tTag] NVIM -----------------------------------------------------------
+alias vimrc='nvim ${HOME}/.config/nvim/init.vim' # open vim config from anywhere
+
+# --- [tTag] RUBY/RAILS -----------------------------------------------------
 alias be='bundle exec '
 alias ber='be rspec;'
 alias rdbm='be rails db:migrate'
 
-# Install trash-cli,
+# --- [tTag] AWS ------------------------------------------------------------
+awsip() {
+  aws ec2 describe-instances --output text  --query 'Reservations[*].Instances[*].[ [Tags[?Key==`Name`].Value],InstanceId,PrivateIpAddress]' | awk 'NR%2{printf "%s ",$0;next;}1'
+}
+
+# --- [tTag] NODE/NVM -------------------------------------------------------
+alias list-npm-globals='npm list -g --depth=0' # List out all globally installed npm packages
+
+# --- [tTag] SSH ------------------------------------------------------------
+alias lightsail="ssh -i ~/.ssh/lightsail ubuntu@54.202.136.211"
+
+# --- [tTag] TREE -----------------------------------------------------------
+alias tree="tree -C --dirsfirst -I 'node_modules'"
+alias tr1='tree -L 1'
+alias tr2='tree -L 2'
+
+
+# --- [tTag] TRASH-CLI -------------------------------------------------------
+# Adds better handling for `rm` using trash-cli
+# https://github.com/sindresorhus/trash-cli
+# You can empty the trash using the empty-trash command
+# https://github.com/sindresorhus/empty-trash-cli
 # trash-put           trash files and directories.
 # trash-empty         empty the trashcan(s).
 # trash-list          list trashed files.
 # trash-restore       restore a trashed file.
 # trash-rm            remove individual files from the trashcan.
-# alias del="trash"       # del / trash are shorter than rmtrash
-# alias rm="echo Use 'del', 'rmt', or the full path i.e. '/bin/rm'"
-# alias rcd="ranger-cd"
+alias del="trash"       # del / trash are shorter than rmtrash
+alias rm="echo Use 'del', 'rmt', or the full path i.e. '/bin/rm'"
+alias rcd="ranger-cd"
 
-## aws ##
-awsip() {
-  aws ec2 describe-instances --output text  --query 'Reservations[*].Instances[*].[ [Tags[?Key==`Name`].Value],InstanceId,PrivateIpAddress]' | awk 'NR%2{printf "%s ",$0;next;}1'
-}
-
-## ssh ##
-alias lightsail="ssh -i ~/.ssh/lightsail ubuntu@54.202.136.211"
-
-## postgresql ##
+# --- [tTag] POSTGRESQL ------------------------------------------------------
 alias pgtail="tail -f -n 500 /usr/local/var/log/postgres.log"
 
-## Connected directly to databases ##
-## Use .pgpass to manage passwords##
+# --- [tTag] DATABASES ------------------------------------------------------
+# Connected directly to databases (use .pgpass to manage passwords)
 alias psql_fg="psql --host HOST_ADDRESS --username=USER_NAME --dbname=DBNAME"
