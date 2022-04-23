@@ -32,6 +32,10 @@ nix-env -iA nixpkgs.gnumake
 nix-env -iA nixpkgs.gcc
 nix-env -iA nixpkgs.direnv
 nix-env -iA nixpkgs.trash-cli
+nix-env -iA nixpkgs.wget
+nix-env -iA nixpkgs.tree
+nix-env -iA nixpkgs.python3
+nix-env -iA nixpkgs.rbenv
 
 
 # add zsh as a login shell
@@ -67,10 +71,11 @@ brew install bat
 # brew install gnumake
 # brew install gcc
 brew install direnv
-brew install wget{{{
+brew install wget
 brew install tree
-brew install trash-cli}}}
+brew install trash-cli
 brew install python3
+brew install rbenv ruby-build
 
 # Install pip
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -91,22 +96,35 @@ stow zsh
 stow tmux
 stow git
 stow nvim
+stow p10k
 # stow kitty # off for now, may experiment with in future
-# stow p10k # off for now, may experiment with in future
 
 # bundle zsh plugins
 antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
 
-# install Plug for vim before opening vim and running `PlugInstall`
-# ref: https://github.com/junegunn/vim-plug
-
 # install nvm (Node Version Manager)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # install latest node
 nvm install node
 
+# install Plug for vim before opening vim and running `PlugInstall`
+# ref: https://github.com/junegunn/vim-plug
 # install neovim plugins
 nvim --headless +PlugInstall +qall
+
+# Setup GitHub Copilot
+nvim +Copilot setup
+
+# install rbenv and follow instructions: https://github.com/rbenv/rbenv
+rbenv init
+
+# Ruby gems
+sudo gem install solargraph # used in nvim by coc-solograph
+sudo gem install pry
+sudo gem install awesome_print
 
 # ====== FI (end) =====================================
