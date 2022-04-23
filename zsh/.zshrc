@@ -45,7 +45,7 @@ export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border --margin=1 --pad
 
 export BAT_THEME="gruvbox-dark"
 
-# nix
+# nix (should not be true on Mac - using Brew instead)
 if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile.d/nix.sh; fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
