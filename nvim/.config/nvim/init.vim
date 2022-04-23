@@ -1,59 +1,41 @@
-" PLUG {{{
-  " Pairs of handy bracket mappings
-  call plug#begin('~/.config/nvim/plugged')
+" --- PLUGINS
+call plug#begin('~/.config/nvim/plugged')
 
-  " Tim Pope
-  " Pairs of handy bracket mappings
-  Plug 'tpope/vim-unimpaired'
-  " git tools
-  Plug 'tpope/vim-fugitive'
-  " Comment stuff
-  Plug 'tpope/vim-commentary'
-  " Add `end` when writing ruby methods/iterators
-  Plug 'tpope/vim-endwise'
-  " surround text in tags, quotes, parens, etc.
-  Plug 'tpope/vim-surround'
-  " vim-repeat
-  Plug 'tpope/vim-repeat'
+" TODO: [ ] see jakewies: .init.vim plugins for things to try
+" TODO: [ ] see jakewies: .init.vim Experiment with settings
+" TODO: [ ] install coc-slime or some similar alternative
 
-  " Fuzzy finding
-  " https://github.com/junegunn/fzf
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  " https://github.com/junegunn/fzf.vim
-  Plug 'junegunn/fzf.vim'
+" Tim Pope
+Plug 'tpope/vim-unimpaired' " Pairs of handy bracket mappings
+Plug 'tpope/vim-fugitive' " Git tools
+Plug 'tpope/vim-commentary' " Comment stuff
+Plug 'tpope/vim-endwise' " Add `end` when writing ruby methods/iterators
+Plug 'tpope/vim-surround' " surround text in tags, quotes, parens, etc.
+Plug 'tpope/vim-repeat'
 
-  " easier testing
-  Plug 'janko/vim-test'
-  " allows gr and grr to replace while keeping contents in register
-  Plug 'vim-scripts/ReplaceWithRegister'
-  " file explorer
-  " Plug 'preservim/nerdtree'
-  " CSS etc inline color previews
-  Plug 'norcalli/nvim-colorizer.lua'
-  " vim-emmet: `<C-y>,` expanding abbreviations similar to emmet
-  Plug 'mattn/emmet-vim'
-  " Add `GBrowse` to github
-  Plug 'tpope/vim-rhubarb'
-  " https://copilot.github.com/
-  Plug 'github/copilot.vim'
-  " Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  "git icons in gutter
-  Plug 'airblade/vim-gitgutter'
+" Fuzzy finding
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " https://github.com/junegunn/fzf
+Plug 'junegunn/fzf.vim' " https://github.com/junegunn/fzf.vim
 
-  " Base16 is pretty standard:
-  Plug 'chriskempson/base16-vim'
-  " PaperColor colorscheme, pretty good but strong folding colors:
-  Plug 'NLKNguyen/papercolor-theme'
-  " Srcery colorscheme is pretty good:
-  Plug 'srcery-colors/srcery-vim'
-  " orbital colorscheme is blue spacey, author also has warm themes:
-  Plug 'fcpg/vim-orbital'
-  " framer-syntax colorscheme is balanced:
-  Plug 'balanceiskey/vim-framer-syntax',  { 'branch': 'main' }
+Plug 'janko/vim-test' " easier testing
+Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
+" Plug 'preservim/nerdtree' file explorer
+Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
+Plug 'mattn/emmet-vim' " vim-emmet: `<C-e>,` expanding abbreviations similar to emmet
+Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
+Plug 'github/copilot.vim' " https://copilot.github.com/
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-gitgutter' "git icons in gutter
 
-  call plug#end()
-" }}}
+" Colors
+Plug 'chriskempson/base16-vim' " Base16 is pretty standard, lots of options
+Plug 'NLKNguyen/papercolor-theme' " PaperColor colorscheme, pretty good but strong folding colors
+Plug 'srcery-colors/srcery-vim' " Srcery colorscheme is pretty good
+Plug 'fcpg/vim-orbital' " orbital colorscheme is blue spacey, author also has warm themes
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' } " Color scheme
+Plug 'balanceiskey/vim-framer-syntax',  { 'branch': 'main' } " framer-syntax colorscheme is balanced
+
+call plug#end()
 
 " SETTINGS {{{
   " vim-polyglot suggests set nocompatible
@@ -169,16 +151,11 @@
   " https://github.com/vim/vim/issues/2790
   set redrawtime=10000
 
-  " colorscheme Base16
-  colorscheme base16-default-dark
-
-  " " colorscheme PaperColor
+  colorscheme base16-3024
+  " colorscheme tokyonight
+  " colorscheme base16-default-dark
   " colorscheme PaperColor
-
-  " colorscheme framer_syntax
   " colorscheme framer_syntax_dark
-
-  " " colorscheme orbital
   " colorscheme orbital
 
   " " colorscheme srcery
