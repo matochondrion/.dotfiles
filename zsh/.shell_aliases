@@ -1,0 +1,78 @@
+# Notes/Reminders
+# !^      first argument
+# !$      last argument
+# !*      all arguments
+# !:2     second argument
+#
+# !:2-3   second to third arguments
+# !:2-$   second to last arguments
+# !:2*    second to last arguments
+# !:2-    second to next to last arguments
+#
+# !:0     the command
+# !!      repeat the previous line (usefule if you forgot sudo)
+#
+# NOTE: alias can be expanded by pressing esc, ctr-e
+
+## #Current Project alias's ##
+alias less='less -R'
+
+alias cp='cp -i'
+alias mv='mv -i'
+
+# alias tree='tree -C --dirsfirst'
+alias tree="tree -C --dirsfirst -I 'node_modules'"
+
+## git alias' ##
+# (Seem to already be handled by zsh plugins)
+# alias g='git'
+
+# Autocomplete for 'g' as well
+# possible solution to command not found error
+# https://github.com/eddiezane/lunchy/issues/57
+# complete -o default -o nospace -F _git g
+# alias gs='clear; git status;'
+# alias gb='clear; git branch;'
+# alias gct='cleal; git commit;'
+# alias glp='clear; git log --graph --oneline --decorate -p --stat;'
+# alias gls='clear; git log --graph --oneline --decorate --stat;'
+alias glo='clear; git log --graph --oneline --decorate;'
+alias gld='clear; git log --graph --date=short --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%ad)%Creset : %<(80,trunc)%s %C(bold blue)<%an>%Creset"'
+# git branch detail:
+gbd() { git for-each-ref --sort=committerdate --format='%(committerdate) %09 %(authorname) %09 %(refname)' }
+        
+alias tr1='tree -L 1'
+alias tr2='tree -L 2'
+
+## fzf ##
+alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
+
+## Ruby/Rails ##
+alias be='bundle exec '
+alias ber='be rspec;'
+alias rdbm='be rails db:migrate'
+
+# Install trash-cli,
+# trash-put           trash files and directories.
+# trash-empty         empty the trashcan(s).
+# trash-list          list trashed files.
+# trash-restore       restore a trashed file.
+# trash-rm            remove individual files from the trashcan.
+# alias del="trash"       # del / trash are shorter than rmtrash
+# alias rm="echo Use 'del', 'rmt', or the full path i.e. '/bin/rm'"
+# alias rcd="ranger-cd"
+
+## aws ##
+awsip() {
+  aws ec2 describe-instances --output text  --query 'Reservations[*].Instances[*].[ [Tags[?Key==`Name`].Value],InstanceId,PrivateIpAddress]' | awk 'NR%2{printf "%s ",$0;next;}1'
+}
+
+## ssh ##
+alias lightsail="ssh -i ~/.ssh/lightsail ubuntu@54.202.136.211"
+
+## postgresql ##
+alias pgtail="tail -f -n 500 /usr/local/var/log/postgres.log"
+
+## Connected directly to databases ##
+## Use .pgpass to manage passwords##
+alias psql_fg="psql --host HOST_ADDRESS --username=USER_NAME --dbname=DBNAME"

@@ -31,6 +31,8 @@ alias vimrc='vim ${HOME}/.config/nvim/init.vim'
 alias cat='bat'
 # colored ls output
 alias ls='ls -al --color'
+# Other aliases
+source ${HOME}/.shell_aliases
 
 # DIRCOLORS (MacOS)
 export CLICOLOR=1
