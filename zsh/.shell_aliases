@@ -24,22 +24,8 @@ alias mv='mv -i'
 alias tree="tree -C --dirsfirst -I 'node_modules'"
 
 ## git alias' ##
-# (Seem to already be handled by zsh plugins)
-# alias g='git'
-
-# Autocomplete for 'g' as well
-# possible solution to command not found error
-# https://github.com/eddiezane/lunchy/issues/57
-# complete -o default -o nospace -F _git g
-# alias gs='clear; git status;'
-# alias gb='clear; git branch;'
-# alias gct='cleal; git commit;'
-# alias glp='clear; git log --graph --oneline --decorate -p --stat;'
-# alias gls='clear; git log --graph --oneline --decorate --stat;'
-alias glo='clear; git log --graph --oneline --decorate;'
-alias gld='clear; git log --graph --date=short --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%ad)%Creset : %<(80,trunc)%s %C(bold blue)<%an>%Creset"'
-# git branch detail (parse error...needs to be fixed):
-# gbd() { git for-each-ref --sort=committerdate --format='%(committerdate) %09 %(authorname) %09 %(refname)' }
+# Handled by zsh oh-my-zsh git plugin
+# ref: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
 
 alias tr1='tree -L 1'
 alias tr2='tree -L 2'
