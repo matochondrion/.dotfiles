@@ -115,10 +115,6 @@ call plug#end()
   autocmd FileType gitcommit set foldmethod=syntax
   " Enable scss-lint checking using Syntastic"
   let g:syntastic_scss_checkers = ['scss_lint']
-  let g:neoterm_repl_ruby='pry'
-  nnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send-line)
-  nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
-  vnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send)
 " }}}
 
 " FUNCTIONS {{{
@@ -634,4 +630,15 @@ call plug#end()
   " Github Copilot - Doesn't seem to work
   " noremap <C-}> <Plug>(copilot-next)
   " noremap <C-{> <Plug>(copilot-previous)
+" }}}
+
+" NEOTERM {{{
+" some setup advice: https://austeretechnology.wordpress.com/2017/07/18/a-ruby-repl-workflow-with-neovim-and-neoterm/
+  let g:neoterm_repl_ruby='pry'
+  let g:neoterm_autoscroll = '1' " scroll to bottom on new input
+  let g:neoterm_default_mod='belowright' " https://github.com/kassio/neoterm/issues/257 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L195 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L250-L254
+
+  nnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send-line)
+  nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
+  vnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send)
 " }}}
