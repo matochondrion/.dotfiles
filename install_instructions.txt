@@ -9,7 +9,48 @@
 # * https://www.jakewiesler.com/blog/portable-development-environment
 
 # =====================================================
-# ====== IF LINUX, INSTALL PACKAGES WITH "nix" ======
+# ====== IF UBUNTU, INSTALL PACKAGES WITH "apt" ======
+# =====================================================
+# (using nix was getting complicated, eg installing pip was difficult)
+sudo apt update
+sudo apt -y install zsh
+sudo curl -sfL git.io/antibody | sudo sh -s - -b /usr/local/bin
+sudo apt -y install git
+sudo apt -y install neovim
+sudo apt -y install tmux
+sudo apt -y install stow
+sudo apt -y install yarn
+sudo apt -y install fzf
+sudo apt -y install ripgrep
+# [start] work around for install bat error
+# ref: https://github.com/sharkdp/bat/issues/938#issuecomment-759415389 
+sudo sed -i '/\/usr\/.crates2.json/d' /var/lib/dpkg/info/ripgrep.list
+sudo apt install bat
+sudo ln -s batcat /usr/bin/bat
+# [end]
+# install gnumake and gcc
+sudo apt -y install build-essentials
+sudo apt -y install direnv
+sudo apt -y install trash-cli
+sudo apt -y install wget
+sudo apt -y install tree
+sudo apt -y install rbenv
+sudo apt -y install python3
+# mabye remove unnecessary files
+sudo apt autoremove
+
+
+# add zsh as a login shell
+command -v zsh | sudo tee -a /etc/shells
+
+# use zsh as default shell
+sudo chsh -s $(which zsh) $USER
+
+# ====== FI (end) =====================================
+
+
+# =====================================================
+# ====== IF LINUX AND USING NIX, INSTALL PACKAGES WITH "nix" ======
 # =====================================================
 # install nix
 curl -L https://nixos.org/nix/install | sh
