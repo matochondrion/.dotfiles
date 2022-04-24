@@ -1,2 +1,4 @@
 nvim/.config/nvim/undodir/*
 nvim/.config/nvim/plugged/*
+nvim/.config/TabNine/
+nvim/.config/coc/
