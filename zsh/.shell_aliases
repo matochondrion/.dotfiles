@@ -39,7 +39,7 @@ alias gcob='git branch | fzf | xargs git checkout' # checkout branch using fzf
 # --- [tTag] NVIM -----------------------------------------------------------
 alias vimrc='nvim ${HOME}/.config/nvim/init.vim' # open vim config from anywhere
 alias todo='nvim scp://ubuntu@35.89.103.28/~/working/mat/wrapbook/lab_notes_current.md' # ubuntu-5
-alias sshtodo='ssh ubuntu@35.89.103.28' # ubuntu-5
+alias sshubuntu='ssh ubuntu@35.89.103.28' # ubuntu-5
 
 # --- [tTag] RUBY/RAILS -----------------------------------------------------
 alias be='bundle exec '
