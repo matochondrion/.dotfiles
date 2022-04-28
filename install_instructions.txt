@@ -21,6 +21,7 @@ sudo apt -y install tmux
 sudo apt -y install stow
 sudo apt -y install yarn
 sudo apt -y install fzf
+sudo apt -y install ag
 sudo apt -y install ripgrep
 # [start] work around for install bat error
 # ref: https://github.com/sharkdp/bat/issues/938#issuecomment-759415389 
@@ -67,6 +68,7 @@ nix-env -iA nixpkgs.tmux
 nix-env -iA nixpkgs.stow
 nix-env -iA nixpkgs.yarn
 nix-env -iA nixpkgs.fzf
+nix-env -iA nixpkgs.ag
 nix-env -iA nixpkgs.ripgrep
 nix-env -iA nixpkgs.bat
 nix-env -iA nixpkgs.gnumake
@@ -107,6 +109,7 @@ brew install tmux
 brew install stow
 brew install yarn
 brew install fzf
+brew install ag
 brew install ripgrep
 brew install bat
 # brew install gnumake
