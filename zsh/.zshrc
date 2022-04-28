@@ -35,5 +35,8 @@ if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # use rbenv to manage ruby versions:
-eval "$(rbenv init - zsh)"
+# eval "$(rbenv init - zsh)"
 
+# TODO: need to include chruby installation in install_instructions
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
