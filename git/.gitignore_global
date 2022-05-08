@@ -65,3 +65,7 @@ TODO.md
 
 # ignore dotfiles bare repository
 .dotfiles
+
+# vim
+Session.vim
+# .solargraph.yml
