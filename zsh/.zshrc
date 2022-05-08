@@ -40,3 +40,6 @@ if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile
 # TODO: need to include chruby installation in install_instructions
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+
+# From Wrapbook install instructions: https://github.com/wrapbook/app#running-tests
+export PATH="./bin:$PATH"
