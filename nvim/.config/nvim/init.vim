@@ -5,6 +5,9 @@ call plug#begin('~/.config/nvim/plugged')
 " TODO: [ ] see jakewies: .init.vim Experiment with settings
 " TODO: [ ] install coc-slime or some similar alternative
 
+" Might need this? Not sure
+"solargraph.commandPath": "/Users/richardmsachsjr/.gem/ruby/3.0.3/bin/solargraph",
+
 " General
 Plug 'janko/vim-test' " easier testing
 Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
@@ -14,6 +17,7 @@ Plug 'mattn/emmet-vim' " vim-emmet: `<C-e>,` expanding abbreviations similar to 
 Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
 Plug 'github/copilot.vim' " https://copilot.github.com/
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-ruby/vim-ruby' " For Facts, Ruby functions, and custom providers
 Plug 'airblade/vim-gitgutter' "git icons in gutter
 Plug 'kassio/neoterm' "send commands to REPL (like Slime)
 
@@ -24,6 +28,7 @@ Plug 'tpope/vim-commentary' " Comment stuff
 Plug 'tpope/vim-endwise' " Add `end` when writing ruby methods/iterators
 Plug 'tpope/vim-surround' " surround text in tags, quotes, parens, etc.
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rails'
 
 " Fuzzy finding
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " https://github.com/junegunn/fzf
@@ -289,6 +294,7 @@ call plug#end()
 
   " Column width: Sometimes we don't want to wrap.
   nnoremap <leader>0 :set textwidth=0<CR>
+  nnoremap <leader>7 :set textwidth=79<CR>
   nnoremap <leader>8 :set textwidth=79<CR>
   nnoremap <leader>9 :set textwidth=99<CR>
 
@@ -376,6 +382,10 @@ call plug#end()
   map Gdy :Git difftool -y master --<CR>
   map Gm :MerginalToggle<CR>
 
+  " GitGutter pneumonic 'git hunk'
+  nmap ghs <Plug>(GitGutterStageHunk)
+  nmap ghu <Plug>(GitGutterUndoHunk)
+  nmap ghp <Plug>(GitGutterPreviewHunk)
   " fzf and searching
   " files
   map <leader>f :Files<CR>
@@ -477,6 +487,7 @@ call plug#end()
         \'coc-html',
         \'coc-json',
         \]
+
   " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
   " unicode characters in the file autoload/float.vim
   set encoding=utf-8
