@@ -1,0 +1,9 @@
+{
+  "solargraph.useBundler": false,
+  "solargraph.symbols": true,
+  "solargraph.completion": true,
+  "solargraph.diagnostics": true,
+  "solargraph.definitions": true,
+  "solargraph.references": true,
+  "solargraph.shell": "/bin/zsh"
+}
