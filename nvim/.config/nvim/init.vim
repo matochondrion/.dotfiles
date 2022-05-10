@@ -13,7 +13,7 @@ Plug 'janko/vim-test' " easier testing
 Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
 " Plug 'preservim/nerdtree' file explorer
 Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
-Plug 'mattn/emmet-vim' " vim-emmet: `<C-h>,` expanding abbreviations similar to emmet
+Plug 'mattn/emmet-vim' " vim-emmet: `ze,` expanding abbreviations similar to emmet
 Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
 Plug 'github/copilot.vim' " https://copilot.github.com/
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -222,27 +222,29 @@ call plug#end()
     set grepprg=ag\ --nogroup\ --nocolor
   endif
 
-  " Emmet: Remap the default <C-Y> leader:"
-  " Note that the trailing , still needs to be entered, so the new keymap would
-  " be <C-e>,
-  let g:user_emmet_leader_key='<leader>e'
+  " Emmet: Remap the default `<C-Y>` leader to `ze`:"
+  " Note that the trailing `,` still needs to be entered, so the new keymap
+  " would be `ze,`. Using `z` as a leader in indert mode since it's rarely used,
+  " and therefore will rarely cause a lag while the editor waits for a second
+  " key, as would happen if we used `a` instead. A control mapping might be
+  " better, but most of them are already used.
+  let g:user_emmet_leader_key='ze'
 " }}}
 
 " REMAP {{{
   let mapleader="\<SPACE>"
 
   " Vim init.vim:
-  map <leader>I :source $MYVIMRC<CR>
-  map <leader>i :edit $MYVIMRC<CR>
+  nmap <leader>I :source $MYVIMRC<CR>
+  nmap <leader>i :edit $MYVIMRC<CR>
 
   " Jump to  tT tag
-  map 't /tT\><CR>
-  map 'T ?tT\><CR>
+  " nmap 't /tT\><CR>
+  " nmap 'T ?tT\><CR>
 
   " Window Commands
   nnoremap <C-w><BS> :tabclose<CR>
   nnoremap <C-w><Esc> :tabedit<CR>
-  nnoremap <C-w>t <C-w>T
   nnoremap <C-t> :tab sp<CR>
   nnoremap <C-e> :Explore<CR>
 
