@@ -13,7 +13,7 @@ Plug 'janko/vim-test' " easier testing
 Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
 " Plug 'preservim/nerdtree' file explorer
 Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
-Plug 'mattn/emmet-vim' " vim-emmet: `<C-e>,` expanding abbreviations similar to emmet
+Plug 'mattn/emmet-vim' " vim-emmet: `<C-h>,` expanding abbreviations similar to emmet
 Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
 Plug 'github/copilot.vim' " https://copilot.github.com/
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -225,7 +225,7 @@ call plug#end()
   " Emmet: Remap the default <C-Y> leader:"
   " Note that the trailing , still needs to be entered, so the new keymap would
   " be <C-e>,
-  let g:user_emmet_leader_key='<C-m>'
+  let g:user_emmet_leader_key='<leader>e'
 " }}}
 
 " REMAP {{{
@@ -234,6 +234,10 @@ call plug#end()
   " Vim init.vim:
   map <leader>I :source $MYVIMRC<CR>
   map <leader>i :edit $MYVIMRC<CR>
+
+  " Jump to  tT tag
+  map 't /tT\><CR>
+  map 'T ?tT\><CR>
 
   " Window Commands
   nnoremap <C-w><BS> :tabclose<CR>
@@ -609,9 +613,9 @@ call plug#end()
   " Show all diagnostics.
   " nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
   " Manage extensions.
-  nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+  " nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
   " Show commands.
-  nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+  " nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
   " Find symbol of current document.
   " nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
   " Search workspace symbols.
