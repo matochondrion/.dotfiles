@@ -5,15 +5,19 @@ call plug#begin('~/.config/nvim/plugged')
 " TODO: [ ] see jakewies: .init.vim Experiment with settings
 " TODO: [ ] install coc-slime or some similar alternative
 
+" Might need this? Not sure
+"solargraph.commandPath": "/Users/richardmsachsjr/.gem/ruby/3.0.3/bin/solargraph",
+
 " General
 Plug 'janko/vim-test' " easier testing
 Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
 " Plug 'preservim/nerdtree' file explorer
 Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
-Plug 'mattn/emmet-vim' " vim-emmet: `<C-e>,` expanding abbreviations similar to emmet
+Plug 'mattn/emmet-vim' " vim-emmet: `ze,` expanding abbreviations similar to emmet
 Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
 Plug 'github/copilot.vim' " https://copilot.github.com/
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-ruby/vim-ruby' " For Facts, Ruby functions, and custom providers
 Plug 'airblade/vim-gitgutter' "git icons in gutter
 Plug 'kassio/neoterm' "send commands to REPL (like Slime)
 
@@ -24,6 +28,7 @@ Plug 'tpope/vim-commentary' " Comment stuff
 Plug 'tpope/vim-endwise' " Add `end` when writing ruby methods/iterators
 Plug 'tpope/vim-surround' " surround text in tags, quotes, parens, etc.
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rails'
 
 " Fuzzy finding
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " https://github.com/junegunn/fzf
@@ -115,10 +120,6 @@ call plug#end()
   autocmd FileType gitcommit set foldmethod=syntax
   " Enable scss-lint checking using Syntastic"
   let g:syntastic_scss_checkers = ['scss_lint']
-  let g:neoterm_repl_ruby='pry'
-  nnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send-line)
-  nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
-  vnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send)
 " }}}
 
 " FUNCTIONS {{{
@@ -221,23 +222,29 @@ call plug#end()
     set grepprg=ag\ --nogroup\ --nocolor
   endif
 
-  " Emmet: Remap the default <C-Y> leader:"
-  " Note that the trailing , still needs to be entered, so the new keymap would
-  " be <C-e>,
-  let g:user_emmet_leader_key='<C-m>'
+  " Emmet: Remap the default `<C-Y>` leader to `ze`:"
+  " Note that the trailing `,` still needs to be entered, so the new keymap
+  " would be `ze,`. Using `z` as a leader in indert mode since it's rarely used,
+  " and therefore will rarely cause a lag while the editor waits for a second
+  " key, as would happen if we used `a` instead. A control mapping might be
+  " better, but most of them are already used.
+  let g:user_emmet_leader_key='ze'
 " }}}
 
 " REMAP {{{
   let mapleader="\<SPACE>"
 
   " Vim init.vim:
-  map <leader>I :source $MYVIMRC<CR>
-  map <leader>i :edit $MYVIMRC<CR>
+  nmap <leader>I :source $MYVIMRC<CR>
+  nmap <leader>i :edit $MYVIMRC<CR>
+
+  " Jump to  tT tag
+  " nmap 't /tT\><CR>
+  " nmap 'T ?tT\><CR>
 
   " Window Commands
   nnoremap <C-w><BS> :tabclose<CR>
   nnoremap <C-w><Esc> :tabedit<CR>
-  nnoremap <C-w>t <C-w>T
   nnoremap <C-t> :tab sp<CR>
   nnoremap <C-e> :Explore<CR>
 
@@ -293,6 +300,7 @@ call plug#end()
 
   " Column width: Sometimes we don't want to wrap.
   nnoremap <leader>0 :set textwidth=0<CR>
+  nnoremap <leader>7 :set textwidth=79<CR>
   nnoremap <leader>8 :set textwidth=79<CR>
   nnoremap <leader>9 :set textwidth=99<CR>
 
@@ -380,6 +388,10 @@ call plug#end()
   map Gdy :Git difftool -y master --<CR>
   map Gm :MerginalToggle<CR>
 
+  " GitGutter pneumonic 'git hunk'
+  nmap ghs <Plug>(GitGutterStageHunk)
+  nmap ghu <Plug>(GitGutterUndoHunk)
+  nmap ghp <Plug>(GitGutterPreviewHunk)
   " fzf and searching
   " files
   map <leader>f :Files<CR>
@@ -481,6 +493,7 @@ call plug#end()
         \'coc-html',
         \'coc-json',
         \]
+
   " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
   " unicode characters in the file autoload/float.vim
   set encoding=utf-8
@@ -500,7 +513,7 @@ call plug#end()
 
   " Make <CR> auto-select the first completion item and notify coc.nvim to
   " format on enter, <cr> could be remapped by other vim plugin
-  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+  inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm()
                                 \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   " Use `[g` and `]g` to navigate diagnostics
@@ -547,11 +560,11 @@ call plug#end()
 
   " Applying codeAction to the selected region.
   " Example: `<leader>aap` for current paragraph
-  xmap <leader>a  <Plug>(coc-codeaction-selected)
-  nmap <leader>a  <Plug>(coc-codeaction-selected)
+  " xmap <leader>a  <Plug>(coc-codeaction-selected)
+  " nmap <leader>a  <Plug>(coc-codeaction-selected)
 
   " Remap keys for applying codeAction to the current buffer.
-  nmap <leader>ac  <Plug>(coc-codeaction)
+  " nmap <leader>ac  <Plug>(coc-codeaction)
   " Apply AutoFix to problem on the current line.
   " nmap <leader>qf  <Plug>(coc-fix-current)
 
@@ -600,11 +613,11 @@ call plug#end()
 
   " Mappings for CoCList
   " Show all diagnostics.
-  nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+  " nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
   " Manage extensions.
-  nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+  " nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
   " Show commands.
-  nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+  " nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
   " Find symbol of current document.
   " nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
   " Search workspace symbols.
@@ -634,4 +647,15 @@ call plug#end()
   " Github Copilot - Doesn't seem to work
   " noremap <C-}> <Plug>(copilot-next)
   " noremap <C-{> <Plug>(copilot-previous)
+" }}}
+
+" NEOTERM {{{
+" some setup advice: https://austeretechnology.wordpress.com/2017/07/18/a-ruby-repl-workflow-with-neovim-and-neoterm/
+  let g:neoterm_repl_ruby='pry'
+  let g:neoterm_autoscroll = '1' " scroll to bottom on new input
+  let g:neoterm_default_mod='belowright' " https://github.com/kassio/neoterm/issues/257 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L195 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L250-L254
+
+  nnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send-line)
+  nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
+  vnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send)
 " }}}
