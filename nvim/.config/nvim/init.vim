@@ -9,9 +9,9 @@ call plug#begin('~/.config/nvim/plugged')
 "solargraph.commandPath": "/Users/richardmsachsjr/.gem/ruby/3.0.3/bin/solargraph",
 
 " General
+" Plug 'preservim/nerdtree' file explorer
 Plug 'janko/vim-test' " easier testing
 Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
-" Plug 'preservim/nerdtree' file explorer
 Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
 Plug 'mattn/emmet-vim' " vim-emmet: `ze,` expanding abbreviations similar to emmet
 Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
@@ -32,7 +32,7 @@ Plug 'tpope/vim-rails'
 
 " Fuzzy finding
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " https://github.com/junegunn/fzf
-Plug 'junegunn/fzf.vim' " https://github.com/junegunn/fzf.vim
+Plug 'junegunn/fzf.vim' " https://github.com/junegunn/fzf.vim, scroll preview with shift-up, shift-down
 
 " Colors
 Plug 'chriskempson/base16-vim' " Base16 is pretty standard, lots of options
@@ -41,6 +41,7 @@ Plug 'srcery-colors/srcery-vim' " Srcery colorscheme is pretty good
 Plug 'fcpg/vim-orbital' " orbital colorscheme is blue spacey, author also has warm themes
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' } " Color scheme
 Plug 'balanceiskey/vim-framer-syntax',  { 'branch': 'main' } " framer-syntax colorscheme is balanced
+Plug 'morhetz/gruvbox'
 
 call plug#end()
 
@@ -97,7 +98,7 @@ call plug#end()
   " Enable mouse for all modes
   set mouse=a
   " always uses clipboard register
-  set clipboard=unnamed
+  set clipboard=unnamedplus
   " set termguicolors
   if (has("termguicolors"))
     set termguicolors
@@ -158,7 +159,8 @@ call plug#end()
   " https://github.com/vim/vim/issues/2790
   set redrawtime=10000
 
-  colorscheme base16-3024
+  colorscheme base16-atelier-cave
+  " colorscheme base16-3024
   " colorscheme tokyonight
   " colorscheme base16-default-dark
   " colorscheme PaperColor
@@ -192,14 +194,19 @@ call plug#end()
   " define line highlight color:
   highlight LineHighlight ctermbg=darkblue guibg=darkblue
 
+  " turn off markdownLinkText underlining (works for Base16 colorschemes since
+  " they define a 'Keyword' highlight group)
+  hi link markdownLinkText Keyword
+  " hi link markdownLinkText markdownUrlTitle
+
   " https://github.com/norcalli/nvim-colorizer.lua setup"
   lua require'colorizer'.setup()
 
   " statusline
   set statusline=                               " reset
   set statusline=%n\                            " Buffer number
-  set statusline+=%f%m%r%h%w\                   " File name, modified, help-reads-only, preview"
   set statusline+=%{FugitiveStatusline()}\      " Git status
+  set statusline+=%f%m%r%h%w\                   " File name, modified, help-reads-only, preview"
   set statusline+=[%{strlen(&fenc)?&fenc:&enc}] " Encoding
   set statusline+=%=                            " Switch to the right side
   set statusline+=\ [%v\ %l\/%L]                " column:line/lines"
@@ -222,25 +229,26 @@ call plug#end()
     set grepprg=ag\ --nogroup\ --nocolor
   endif
 
-  " Emmet: Remap the default `<C-Y>` leader to `ze`:"
+  " Emmet: Remap the default `<C-Y>` leader to `<C-w>e`:"
   " Note that the trailing `,` still needs to be entered, so the new keymap
-  " would be `ze,`. Using `z` as a leader in indert mode since it's rarely used,
-  " and therefore will rarely cause a lag while the editor waits for a second
-  " key, as would happen if we used `a` instead. A control mapping might be
-  " better, but most of them are already used.
-  let g:user_emmet_leader_key='ze'
+  " would be `<C-w>e,`.
+  let g:user_emmet_leader_key='<C-w><C-e>'
 " }}}
 
 " REMAP {{{
   let mapleader="\<SPACE>"
+
+  " erb expansions, based off Emmet leader
+  imap <C-w>e< <%=  %><esc>hhi
+  imap <C-w><C-e>< <%=  %><esc>hhi
 
   " Vim init.vim:
   nmap <leader>I :source $MYVIMRC<CR>
   nmap <leader>i :edit $MYVIMRC<CR>
 
   " Jump to  tT tag
-  " nmap 't /tT\><CR>
-  " nmap 'T ?tT\><CR>
+  nmap 't /tT\><CR>
+  nmap 'T ?tT\><CR>
 
   " Window Commands
   nnoremap <C-w><BS> :tabclose<CR>
@@ -255,7 +263,7 @@ call plug#end()
   nmap <leader>v :vsplit<CR>
   nmap <leader>s :split<CR><C-j>
   nmap <leader>o :only<CR>
-  " delete all buffers | open last closed buffer | delete [NO NAME] buffer
+  " delete all bufers | open last closed buffer | delete [NO NAME] buffer
   " need to escape the pipe, \|
   nmap <leader>O :%bd\|e#\|bd#<CR>
   " quit buffer in normal mode

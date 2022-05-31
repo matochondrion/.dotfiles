@@ -43,3 +43,6 @@ source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 
 # From Wrapbook install instructions: https://github.com/wrapbook/app#running-tests
 export PATH="./bin:$PATH"
+
+# export PATH="${HOME}/.pyenv/shims:${PATH}"
+export PATH=./node_modules/.bin:$PATH
