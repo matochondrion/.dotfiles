@@ -7,7 +7,6 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Might need this? Not sure
 "solargraph.commandPath": "/Users/richardmsachsjr/.gem/ruby/3.0.3/bin/solargraph",
-
 " General
 " Plug 'preservim/nerdtree' file explorer
 Plug 'janko/vim-test' " easier testing
@@ -121,6 +120,8 @@ call plug#end()
   autocmd FileType gitcommit set foldmethod=syntax
   " Enable scss-lint checking using Syntastic"
   let g:syntastic_scss_checkers = ['scss_lint']
+  " Use netrw tree listing mode
+  let g:netrw_liststyle=3
 " }}}
 
 " FUNCTIONS {{{
@@ -360,13 +361,13 @@ call plug#end()
   map Gdi :Gvdiff<CR>
   " diff between current file and file from previous commit
   map Gdf :Gvdiff !~1<CR>
-  " diff between current file and file in master
-  map Gdm :Gvdiff master:%<CR>
-  " List of files with diffs working tree to master:
-  map Gdn :Git diff --name-status master --<CR>
-  " Git difftool between current branch and master using quickfix
+  " diff between current file and file in main
+  map Gdm :Gvdiff main:%<CR>
+  " List of files with diffs working tree to main:
+  map Gdn :Git diff --name-status main --<CR>
+  " Git difftool between current branch and main using quickfix
   " Can navigate quickfix and see gutter changes or `gdm` for diffsplit
-  map Gdt :Git difftool master --<CR>
+  map Gdt :Git difftool main --<CR>
   " Git difftool between, diffs open in tabs
   map Gs :G<CR>
   map GS :G<CR>:q<CR>

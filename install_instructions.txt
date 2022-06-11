@@ -164,7 +164,8 @@ nvim --headless +PlugInstall +qall
 nvim +Copilot setup
 
 # install rbenv and follow instructions: https://github.com/rbenv/rbenv
-rbenv init
+# May want to use ruby-version and chruby instead
+# rbenv init
 
 # Ruby gems
 sudo gem install solargraph # used in nvim by coc-solograph
