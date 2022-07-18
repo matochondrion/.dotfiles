@@ -143,6 +143,11 @@ stow nvim
 stow p10k
 # stow kitty # off for now, may experiment with in future
 
+# links
+## Fix vim terminal OR commands (`:!g` for example) not loading .zshrc
+## https://stackoverflow.com/a/34049730
+ln -s ~/.zshrc ~/.zshenv
+
 # bundle zsh plugins
 antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
 

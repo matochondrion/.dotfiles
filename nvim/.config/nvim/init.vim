@@ -19,6 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-ruby/vim-ruby' " For Facts, Ruby functions, and custom providers
 Plug 'airblade/vim-gitgutter' "git icons in gutter
 Plug 'kassio/neoterm' "send commands to REPL (like Slime)
+Plug 'junegunn/vim-easy-align' "alignment plugin: https://github.com/junegunn/vim-easy-align
 
 " Tim Pope
 Plug 'tpope/vim-unimpaired' " Pairs of handy bracket mappings
@@ -62,7 +63,7 @@ call plug#end()
   " override ignorecase when pattern has uppercase chars
   set smartcase
   " sets at least 10 lines above and below the cursor
-  set scrolloff=10
+  set scrolloff=5
   " prevents swapfile
   set noswapfile
   " uses older regex engine: speeds scrolling
@@ -91,6 +92,13 @@ call plug#end()
   " https://stackoverflow.com/questions/1290285/why-cant-i-stop-vim-from-wrapping-my-code
   " set wrap!
   set nowrap
+  " when lines are soft wrapped, indent if first line indented
+  " https://vi.stackexchange.com/questions/14932/the-indent-of-wrapped-lines
+  set breakindent breakindentopt=sbr,list:-1 linebreak
+  " Update when have time...used to match bullets. this should be set up per
+  " filetype probably.
+  " https://vi.stackexchange.com/questions/14932/the-indent-of-wrapped-lines
+  let &formatlistpat = '^line\s\+\d\+:\s*'
   set linebreak "Not sure why this would never be set?
   set tw=79
   set colorcolumn=+1
@@ -121,7 +129,9 @@ call plug#end()
   " Enable scss-lint checking using Syntastic"
   let g:syntastic_scss_checkers = ['scss_lint']
   " Use netrw tree listing mode
-  let g:netrw_liststyle=3
+  " (Causes issues when using Marks to jump to files/directories on remote
+  " servers)
+  " let g:netrw_liststyle=3
 " }}}
 
 " FUNCTIONS {{{
@@ -160,7 +170,8 @@ call plug#end()
   " https://github.com/vim/vim/issues/2790
   set redrawtime=10000
 
-  colorscheme base16-atelier-cave
+  colorscheme base16-atelier-heath
+  " colorscheme base16-atelier-cave
   " colorscheme base16-3024
   " colorscheme tokyonight
   " colorscheme base16-default-dark
@@ -240,16 +251,28 @@ call plug#end()
   let mapleader="\<SPACE>"
 
   " erb expansions, based off Emmet leader
-  imap <C-w>e< <%=  %><esc>hhi
-  imap <C-w><C-e>< <%=  %><esc>hhi
+  imap <C-w>< <%=  %><esc>hhi
+  " imap <C-w><C-e>< <%=  %><esc>hhi
 
   " Vim init.vim:
   nmap <leader>I :source $MYVIMRC<CR>
   nmap <leader>i :edit $MYVIMRC<CR>
 
-  " Jump to  tT tag
-  nmap 't /tT\><CR>
-  nmap 'T ?tT\><CR>
+  " Jump to [tT] tag
+  nmap tt /tT\><CR>
+  nmap tT ?tT\><CR>
+
+  " Jump to bullet Item
+  nmap ti /^\s*\*/e<CR>
+  nmap tI ?^\s*\*/e<CR>
+
+  " Jump to daSh item
+  nmap ts /^\s*\-/e<CR>
+  " nmap 'S ?\-\s<CR> " S reserved for Status
+
+  " Jump to start of line (mnemonic to the left of $)
+  nmap <S-e> 0
+  nmap z^ 0
 
   " Window Commands
   nnoremap <C-w><BS> :tabclose<CR>
@@ -446,6 +469,15 @@ call plug#end()
 
   " Copy a file: https://salferrarello.com/vim-netrw-duplicate-file/
   nnoremap <silent> <Leader>dd :clear<bar>silent exec "!cp '%:p' '%:p:h/%:t:r-copy.%:e'"<bar>redraw<bar>echo "Copied " . expand('%:t') . ' to ' . expand('%:t:r') . '-copy.' . expand('%:e')<cr>
+
+  " Copy a file path to unamed register
+  nmap <leader>cp :let @+ = expand("%")<cr>
+  " Easy-Align:
+  " Start interactive EasyAlign in visual mode (e.g. vipga)
+  xmap ga <Plug>(EasyAlign)
+
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
 " }}}
 
 " AUTOCMD & COMMAND {{{
@@ -662,7 +694,8 @@ call plug#end()
 " some setup advice: https://austeretechnology.wordpress.com/2017/07/18/a-ruby-repl-workflow-with-neovim-and-neoterm/
   let g:neoterm_repl_ruby='pry'
   let g:neoterm_autoscroll = '1' " scroll to bottom on new input
-  let g:neoterm_default_mod='belowright' " https://github.com/kassio/neoterm/issues/257 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L195 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L250-L254
+  " let g:neoterm_default_mod='belowright' " https://github.com/kassio/neoterm/issues/257 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L195 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L250-L254
+  let g:neoterm_default_mod='vertical' " https://github.com/kassio/neoterm/issues/257 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L195 | https://github.com/kassio/neoterm/blob/master/doc/neoterm.txt#L250-L254
 
   nnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send-line)
   nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
