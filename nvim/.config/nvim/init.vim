@@ -12,7 +12,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'janko/vim-test' " easier testing
 Plug 'vim-scripts/ReplaceWithRegister' " allows gr and grr to replace while keeping contents in register
 Plug 'norcalli/nvim-colorizer.lua' " CSS etc inline color previews
-Plug 'mattn/emmet-vim' " vim-emmet: `ze,` expanding abbreviations similar to emmet
+Plug 'mattn/emmet-vim' " vim-emmet: expanding abbreviations similar to emmet
 Plug 'tpope/vim-rhubarb' " Add `GBrowse` to github
 Plug 'github/copilot.vim' " https://copilot.github.com/
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -211,6 +211,9 @@ call plug#end()
   hi link markdownLinkText Keyword
   " hi link markdownLinkText markdownUrlTitle
 
+  " define search highlight color:
+  hi Search guibg=MidnightBlue guifg=wheat
+  hi Search cterm=NONE ctermfg=grey ctermbg=blue
   " https://github.com/norcalli/nvim-colorizer.lua setup"
   lua require'colorizer'.setup()
 
@@ -258,13 +261,13 @@ call plug#end()
   nmap <leader>I :source $MYVIMRC<CR>
   nmap <leader>i :edit $MYVIMRC<CR>
 
-  " Jump to [tT] tag
-  nmap tt /tT\><CR>
-  nmap tT ?tT\><CR>
+  " " Jump to [tT] tag
+  " nmap tt /tT\><CR>
+  " nmap tT ?tT\><CR>
 
-  " Jump to bullet Item
-  nmap ti /^\s*\*/e<CR>
-  nmap tI ?^\s*\*/e<CR>
+  " " Jump to bullet Item
+  " nmap ti /^\s*\*/e<CR>
+  " nmap tI ?^\s*\*/e<CR>
 
   " Jump to daSh item
   nmap ts /^\s*\-/e<CR>
@@ -421,9 +424,9 @@ call plug#end()
   map Gm :MerginalToggle<CR>
 
   " GitGutter pneumonic 'git hunk'
-  nmap ghs <Plug>(GitGutterStageHunk)
-  nmap ghu <Plug>(GitGutterUndoHunk)
-  nmap ghp <Plug>(GitGutterPreviewHunk)
+  nmap Ghs <Plug>(GitGutterStageHunk)
+  nmap Ghu <Plug>(GitGutterUndoHunk)
+  nmap Ghp <Plug>(GitGutterPreviewHunk)
   " fzf and searching
   " files
   map <leader>f :Files<CR>
@@ -688,6 +691,9 @@ call plug#end()
   " Github Copilot - Doesn't seem to work
   " noremap <C-}> <Plug>(copilot-next)
   " noremap <C-{> <Plug>(copilot-previous)
+
+  "" Disable Copilot by default
+  let g:copilot_enabled = v:false
 " }}}
 
 " NEOTERM {{{

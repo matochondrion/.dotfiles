@@ -46,3 +46,4 @@ export PATH="./bin:$PATH"
 
 # export PATH="${HOME}/.pyenv/shims:${PATH}"
 export PATH=./node_modules/.bin:$PATH
+export DISABLE_SPRING=true
