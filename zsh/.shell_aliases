@@ -32,6 +32,16 @@ alias update-antibody='antibody bundle < $HOME/.zsh_plugins.txt > $HOME/.zsh_plu
 # Handled by zsh oh-my-zsh git plugin
 # ref: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
 
+function check_remote_branch() {
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    git ls-remote --heads origin | grep -w "$current_branch" &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Branch '$current_branch' exists remotely."
+    else
+        echo "Branch '$current_branch' does not exist remotely."
+    fi
+}
+
 # --- [tTag] FZF ------------------------------------------------------------
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 alias gcob='git branch | fzf | xargs git checkout' # checkout branch using fzf

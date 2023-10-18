@@ -20,6 +20,8 @@ Plug 'vim-ruby/vim-ruby' " For Facts, Ruby functions, and custom providers
 Plug 'airblade/vim-gitgutter' "git icons in gutter
 Plug 'kassio/neoterm' "send commands to REPL (like Slime)
 Plug 'junegunn/vim-easy-align' "alignment plugin: https://github.com/junegunn/vim-easy-align
+Plug 'Asheq/close-buffers.vim' "close hidden buffers, etc
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " Markdown Preview If you have nodejs and yarn
 
 " Tim Pope
 Plug 'tpope/vim-unimpaired' " Pairs of handy bracket mappings
@@ -100,7 +102,7 @@ call plug#end()
   " https://vi.stackexchange.com/questions/14932/the-indent-of-wrapped-lines
   let &formatlistpat = '^line\s\+\d\+:\s*'
   set linebreak "Not sure why this would never be set?
-  set tw=79
+  set tw=0
   set colorcolumn=+1
   " Enable mouse for all modes
   set mouse=a
@@ -113,7 +115,7 @@ call plug#end()
   " use the indent of the previous line for a newly created line
   set autoindent
   " disables initial folds, `zi` toggles on/off
-  set nofoldenable
+  " set nofoldenable
   " uses {{{}}} with folds by default
   set foldmethod=marker
   " refreshes window less
@@ -131,7 +133,17 @@ call plug#end()
   " Use netrw tree listing mode
   " (Causes issues when using Marks to jump to files/directories on remote
   " servers)
-  " let g:netrw_liststyle=3
+  let g:netrw_chgwin = -1
+  let g:netrw_banner = 1
+  let g:netrw_liststyle = 3
+  let g:netrw_browse_split = 0
+  let g:netrw_altv = 1
+  let g:netrw_winsize = 25
+  " Automatically open drawer when starting nvim
+  " augroup ProjectDrawer
+  "   autocmd!
+  "   autocmd VimEnter * :Vexplore
+  " augroup END
 " }}}
 
 " FUNCTIONS {{{
@@ -211,6 +223,7 @@ call plug#end()
   hi link markdownLinkText Keyword
   " hi link markdownLinkText markdownUrlTitle
 
+  highlight LineHighlight ctermbg=darkblue guibg=darkblue
   " define search highlight color:
   hi Search guibg=MidnightBlue guifg=wheat
   hi Search cterm=NONE ctermfg=grey ctermbg=blue
@@ -248,6 +261,36 @@ call plug#end()
   " Note that the trailing `,` still needs to be entered, so the new keymap
   " would be `<C-w>e,`.
   let g:user_emmet_leader_key='<C-w><C-e>'
+
+  " MarkdownPreview
+  " options for markdown render
+  " mkit: markdown-it options for render
+  " katex: katex options for math
+  " uml: markdown-it-plantuml options
+  " maid: mermaid options
+  " disable_sync_scroll: if disable sync scroll, default 0
+  " sync_scroll_type: 'middle', 'top' or 'relative', default value is 'middle'
+  "   middle: mean the cursor position alway show at the middle of the preview page
+  "   top: mean the vim top viewport alway show at the top of the preview page
+  "   relative: mean the cursor position alway show at the relative positon of the preview page
+  " hide_yaml_meta: if hide yaml metadata, default is 1
+  " sequence_diagrams: js-sequence-diagrams options
+  " content_editable: if enable content editable for preview page, default: v:false
+  " disable_filename: if disable filename header for preview page, default: 0
+  let g:mkdp_preview_options = {
+      \ 'mkit': {},
+      \ 'katex': {},
+      \ 'uml': {},
+      \ 'maid': {},
+      \ 'disable_sync_scroll': 0,
+      \ 'sync_scroll_type': 'top',
+      \ 'hide_yaml_meta': 1,
+      \ 'sequence_diagrams': {},
+      \ 'flowchart_diagrams': {},
+      \ 'content_editable': v:false,
+      \ 'disable_filename': 0,
+      \ 'toc': {}
+      \ }
 " }}}
 
 " REMAP {{{
@@ -281,7 +324,9 @@ call plug#end()
   nnoremap <C-w><BS> :tabclose<CR>
   nnoremap <C-w><Esc> :tabedit<CR>
   nnoremap <C-t> :tab sp<CR>
-  nnoremap <C-e> :Explore<CR>
+  nnoremap <C-e><C-e> :Explore<CR>
+  nnoremap <C-e><C-t> :Vexplore .<CR>
+  nnoremap <C-e><C-q> :Vexplore<CR> <C-w>x<C-w><C-l>:bd<CR>
 
   " Buffers
   "write and quit buffer
@@ -296,7 +341,7 @@ call plug#end()
   " quit buffer in normal mode
   noremap <leader>q :q<CR>
   " close buf in current split, leave split open, change to next buffer
-  noremap <leader>Q :w<CR>:bp<CR>:bd #<CR>
+  noremap <leader>Q :Bdelete menu<CR>
   " Quickly switch to last buffer
   " close all windows and save splits
   " noremap <leader>x :wqa<CR>
@@ -318,11 +363,13 @@ call plug#end()
   endif
 
   " Folding
+  let g:markdown_folding = 1
+  let g:javaScript_fold = 1
+  let g:ruby_fold = 1
   nnoremap ff :setlocal foldmethod=indent<cr>zM
-  nnoremap fe :setlocal foldmethod=expr<cr>zM
+  nnoremap fe :setlocal foldmethod=expr<cr>zM:setlocal foldlevel=1<cr>
   nnoremap fm :setlocal foldmethod=marker<cr>zM
   nnoremap fs :setlocal foldmethod=syntax<cr>zM
-
   " Nerdtree
   " nnoremap <leader>e :NERDTreeToggle<CR>
   " nnoremap <leader>r :NERDTreeFind<CR>
@@ -341,10 +388,20 @@ call plug#end()
 
   " Split width
   nnoremap yoA :vertical resize\|resize<CR>
+  " Take up 'all' the width
   nnoremap yoa <C-w>=
-  nnoremap yom <C-w>15>
-  nnoremap yol <C-w>5<
+  " A good 'reading' width
+  nnoremap yor :vertical resize 60<CR>
+  " An `eighty` width
   nnoremap yoe :vertical resize 85<CR>
+  " A `best` width
+  nnoremap yob :vertical resize 150<CR>
+  " 'more'
+  nnoremap yom <C-w>15>
+  " 'less'
+  nnoremap yol <C-w>5<
+  " 'grow' (vertical)
+  nnoremap yog <C-w>5+
 
   " highlight the current line (mnemonic: fold highlight):
   nnoremap fh :call matchadd('LineHighlight','\%'.line('.').'l')<CR>
@@ -361,6 +418,7 @@ call plug#end()
   nnoremap dc 0<S-d>
   " insert formatted date"
   map <leader>dt :r !date "+\%Y-\%m-\%d \%a"<CR>kJ$
+  map <leader>di :r !date "+\%Y\%m\%d\%H\%M"<CR>kJ$A-
 
   " Pane Navigation
   map <C-h> <C-w>h
@@ -406,7 +464,7 @@ call plug#end()
 
   " Navigate QuickFix with [q and ]q"
   " History of commits on current branch
-  map Glb :Gclog master..<CR>
+  map Glb :Gclog main..<CR>
   " History of current file. Use `Glog` for all branch history:
   map Glf :0Gclog<CR>
   " Commit history:
@@ -420,7 +478,7 @@ call plug#end()
   nnoremap Gy :GBrowse!<CR>
   xnoremap Gy :'<'>GBrowse!<CR>
 
-  map Gdy :Git difftool -y master --<CR>
+  map Gdy :Git difftool -y main --<CR>
   map Gm :MerginalToggle<CR>
 
   " GitGutter pneumonic 'git hunk'
@@ -438,6 +496,8 @@ call plug#end()
   map <leader>F :find 
   " Ag search for word under cursor
   noremap <leader>a :exe ':Ag ' . expand('<cword>')<CR>
+  " Ag search for word backlinks using file name
+  noremap <leader>B :exe ':Ag ' . expand("%:t")<CR>
   " fzf history
   map <leader>z :History<CR>
   " fzf windows
@@ -475,12 +535,21 @@ call plug#end()
 
   " Copy a file path to unamed register
   nmap <leader>cp :let @+ = expand("%")<cr>
+  " Copy file name with extension"
+  nmap <leader>cf :let @+ = expand("%:t")<cr>
+  " Copy file name without extension"
+  nmap <leader>cn :let @+ = expand("%:t:r")<cr>
   " Easy-Align:
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
 
   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
   nmap ga <Plug>(EasyAlign)
+
+  " Markdown Preview normal/insert
+  nmap <C-s> <Plug>MarkdownPreview
+  nmap <M-s> <Plug>MarkdownPreviewStop
+  nmap <C-p> <Plug>MarkdownPreviewToggle
 " }}}
 
 " AUTOCMD & COMMAND {{{
@@ -547,7 +616,7 @@ call plug#end()
   " coc.nvim better display for messages. Setting to 1 creates bug - have to
   " hit enter to continue
   set shortmess=a
-  set cmdheight=1
+  set cmdheight=2
   " coc.nvim bad experience for diagnostic messages with default of 4000.
   set updatetime=200
   " coc.nvim don't give |ins-completion-menu| messages.
@@ -557,9 +626,9 @@ call plug#end()
 
   " Make <CR> auto-select the first completion item and notify coc.nvim to
   " format on enter, <cr> could be remapped by other vim plugin
+  " https://github.com/neoclide/coc.nvim/issues/124
   inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm()
                                 \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
   " Use `[g` and `]g` to navigate diagnostics
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -684,16 +753,18 @@ call plug#end()
 " }}}
 "
 " COPILOT {{{
-  " let g:copilot_filetypes = {
-  "       \ 'markdown': v:true,
-  "       \ }
+  "" Disable Copilot by default
+  " let g:copilot_enabled = v:false
+
+  "" Enable for specific file types
+  let g:copilot_filetypes = {
+        \ 'markdown': v:true,
+        \ }
 
   " Github Copilot - Doesn't seem to work
-  " noremap <C-}> <Plug>(copilot-next)
-  " noremap <C-{> <Plug>(copilot-previous)
+  noremap <C-}> <Plug>(copilot-next)
+  noremap <C-{> <Plug>(copilot-previous)
 
-  "" Disable Copilot by default
-  let g:copilot_enabled = v:false
 " }}}
 
 " NEOTERM {{{
@@ -707,3 +778,9 @@ call plug#end()
   nnoremap <silent> <C-c><C-m> <Plug>(neoterm-repl-send)
   vnoremap <silent> <C-c><C-c> <Plug>(neoterm-repl-send)
 " }}}
+" TODO: Get this to work...read article for tips
+  " Set fold level to 1 for markdown files
+  " https://bitcrowd.dev/folding-sections-of-markdown-in-vim
+  au FileType markdown setlocal foldmethod=expr
+  au FileType markdown setlocal foldlevel=1
+  au FileType ruby setlocal foldlevel=1

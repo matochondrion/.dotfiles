@@ -12,6 +12,10 @@ export NVM_COMPLETION=true
 
 source ${HOME}/.zsh_plugins.sh
 
+# vi mode
+# bindkey -v
+# export KEYTIMEOUT=1
+
 # Aliases
 source ${HOME}/.shell_aliases
 
@@ -40,6 +44,7 @@ if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile
 # TODO: need to include chruby installation in install_instructions
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby 3.2.2
 
 # From Wrapbook install instructions: https://github.com/wrapbook/app#running-tests
 export PATH="./bin:$PATH"
@@ -47,3 +52,4 @@ export PATH="./bin:$PATH"
 # export PATH="${HOME}/.pyenv/shims:${PATH}"
 export PATH=./node_modules/.bin:$PATH
 export DISABLE_SPRING=true
+export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
